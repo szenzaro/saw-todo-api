@@ -1,0 +1,70 @@
+TodoRequest = {
+    state: 'done' | 'ongoing';
+    text: string;
+}
+
+Todo = { id: string; } & TodoRequest
+
+basePath: http://localhost:6789/v1
+
+- GET /todos
+    - 200 OK 
+        {
+            "links": {
+                "self": "/todos"
+            },
+            "metadata": {
+                "timestamp": "2023-03-28T15:43:52.977Z",
+                "count": 42
+            },
+            "data": [
+                { "id": "1", "state": "done", "text": "Hello"}, 
+                { "id": "2", "state": "done", "text": "World"},
+                ...,
+                { "id": "42", "state": "done", "text": "!"}
+            ]
+        }
+    - 404 Not Found
+    - 500 Internal Server Error
+
+- POST /todos
+    body: { state: 'ongoing', text: 'hello' }
+    - 201 Created { 
+        "links": { "self": "/todos/1"}
+        "data" : { id: '1', state: 'ongoing', text: 'hello' }
+    }
+    - 400 Bad Request
+    - 500 Internal Server Error
+
+- GET /todos/:id
+    - 200 Ok  { 
+        "links": { "self": "/todos/1"}
+        "data" : { id: '1', state: 'ongoing', text: 'hello' }
+    }
+    - 404 Not Found
+    - 500 Internal Server Error
+
+- DELETE /todos/:id
+    - 204 No Content
+    - 404 Not Found
+    - 500 Internal Server Error
+
+- PUT /todos/:id
+    body: { id: '1', state: 'done', text: 'hello' }
+    - 200 Ok  { 
+        "links": { "self": "/todos/1"}
+        "data" : { id: '1', state: 'done', text: 'hello' }
+    }
+    - 404 Not Found
+    - 500 Internal Server Error
+
+    
+- PATCH /todos/:id
+    body: { state: 'done' }
+    - 200 Ok  { 
+        "links": { "self": "/todos/1"}
+        "data" : { id: '1', state: 'done', text: 'hello' }
+    }
+    - 404 Not Found
+    - 500 Internal Server Error
+
