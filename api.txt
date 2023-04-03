@@ -7,7 +7,7 @@ Todo = { id: string; } & TodoRequest
 
 basePath: http://localhost:6789/v1
 
-- GET /todos
+- GET /todos?state=x
     - 200 OK 
         {
             "links": {
